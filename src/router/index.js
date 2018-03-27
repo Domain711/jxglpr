@@ -48,6 +48,9 @@ export default new Router({
             { path: '/n/college', component: _import('college/index'), name: 'college', desc: '学院信息管理' },
             { path: '/n/major', component: _import('major/index'), name: 'major', desc: '专业信息管理' },
             { path: '/n/students', component: _import('students/index'), name: 'students', desc: '学生信息管理' },
+            { path: '/n/teachplan', component: _import('teachplan/index'), name: 'teachplan', desc: '教案上传管理' },
+            { path: '/n/lessonplan', component: _import('lessonplan/index'), name: 'lessonplan', desc: '教学计划管理' },
+            { path: '/n/achievements', component: _import('achievements/index'), name: 'achievements', desc: '科研成果管理' },
             { path: '/n/log', component: _import('log/index'), name: 'log', desc: '系统日志' }
           ]
         }

@@ -2,12 +2,12 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.num" placeholder="工号" clearable></el-input>
+        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('teachers:teachers:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('teachers:teachers:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('teachplan:teachplan:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('teachplan:teachplan:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -29,58 +29,34 @@
         label="序号">
       </el-table-column>
       <el-table-column
-        prop="num"
+        prop="teachplanname"
         header-align="center"
         align="center"
-        label="工号">
+        label="教案名称">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="attachname"
         header-align="center"
         align="center"
-        label="学院">
+        label="附件名称">
       </el-table-column>
       <el-table-column
-        prop="majornum"
+        prop="createuser"
         header-align="center"
         align="center"
-        label="专业">
+        label="创建人">
       </el-table-column>
       <el-table-column
-        prop="gradenum"
+        prop="createtime"
         header-align="center"
         align="center"
-        label="班级">
+        label="创建时间">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="remark"
         header-align="center"
         align="center"
-        label="姓名">
-      </el-table-column>
-      <el-table-column
-        prop="coursenum"
-        header-align="center"
-        align="center"
-        label="课程">
-      </el-table-column>
-      <!--<el-table-column-->
-        <!--prop="type"-->
-        <!--header-align="center"-->
-        <!--align="center"-->
-        <!--label="类型">-->
-      <!--</el-table-column>-->
-      <el-table-column
-        prop="period"
-        header-align="center"
-        align="center"
-        label="学时">
-      </el-table-column>
-      <el-table-column
-        prop="credit"
-        header-align="center"
-        align="center"
-        label="学分">
+        label="备注">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -115,7 +91,7 @@
     data () {
       return {
         dataForm: {
-          num: ''
+          key: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -139,9 +115,9 @@
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          num: this.dataForm.num
+          key: this.dataForm.key
         }
-        API.teachers.list(params).then(({data}) => {
+        API.teachplan.list(params).then(({data}) => {
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
@@ -184,7 +160,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          API.teachers.del(ids).then(({data}) => {
+          API.teachplan.del(ids).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',

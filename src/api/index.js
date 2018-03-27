@@ -16,6 +16,9 @@ import * as question from './modules/question'
 import * as college from './modules/college'
 import * as major from './modules/major'
 import * as students from './modules/students'
+import * as teachplan from './modules/teachplan'
+import * as lessonplan from './modules/lessonplan'
+import * as achievements from './modules/achievements'
 import * as schedule from './modules/schedule'
 
 export default {
@@ -37,5 +40,8 @@ export default {
   college,        // 学院信息管理
   major,        // 专业信息管理
   students,        // 学生信息管理
+  teachplan,        // 教案上传管理
+  lessonplan,        // 教学计划管理
+  achievements,        // 科研成果管理
   schedule    // 定时任务
 }
