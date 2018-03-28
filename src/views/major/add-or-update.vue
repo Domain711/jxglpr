@@ -10,8 +10,15 @@
       <el-form-item label="专业名称" prop="majorname">
         <el-input v-model="dataForm.majorname" placeholder="专业名称"></el-input>
       </el-form-item>
-      <el-form-item label="学院编号" prop="collegenum">
-        <el-input v-model="dataForm.collegenum" placeholder="学院编号"></el-input>
+      <el-form-item label="所属学院" prop="collegenum">
+        <el-select v-model="dataForm.collegenum" placeholder="请选择">
+          <el-option
+            v-for="college in collegeList"
+            :key="college.collegenum"
+            :label="college.collegename"
+            :value="college.collegenum">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
@@ -30,6 +37,23 @@
     data () {
       return {
         visible: false,
+        collegeList: [],
+        colleges: [{
+          value: '01',
+          label: '计算机学院'
+        }, {
+          value: '02',
+          label: '电气学院'
+        }, {
+          value: '03',
+          label: '土木工程学院'
+        }, {
+          value: '04',
+          label: '外国语学院'
+        }, {
+          value: '05',
+          label: '测勘院'
+        }],
         dataForm: {
           id: 0,
           majornum: '',
@@ -55,9 +79,14 @@
     methods: {
       init (id) {
         this.dataForm.id = id || 0
-        this.visible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
+        API.college.select().then(({data}) => {
+          this.collegeList = data && data.code === 0 ? data.collegeList : []
+        }).then(() => {
+          this.visible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].resetFields()
+          })
+        }).then(() => {
           if (this.dataForm.id) {
             API.major.info(this.dataForm.id).then(({data}) => {
               if (data && data.code === 0) {

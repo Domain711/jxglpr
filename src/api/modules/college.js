@@ -12,6 +12,15 @@ export function list (params) {
   })
 }
 
+// 获取学院信息
+export function select () {
+  return request({
+    url: requestUrl('/college/college/select'),
+    method: 'get',
+    params: requestParam({}, 'get')
+  })
+}
+
 // 获取信息
 export function info (id) {
   return request({
