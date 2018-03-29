@@ -11,7 +11,7 @@
         <el-input v-model="dataForm.majorname" placeholder="专业名称"></el-input>
       </el-form-item>
       <el-form-item label="所属学院" prop="collegenum">
-        <el-select v-model="dataForm.collegenum" placeholder="请选择">
+        <el-select v-model="dataForm.collegenum" placeholder="请选择学院">
           <el-option
             v-for="college in collegeList"
             :key="college.collegenum"
@@ -68,10 +68,10 @@
             { required: true, message: '专业编号不能为空', trigger: 'blur' }
           ],
           majorname: [
-            { required: true, message: '专业名称不能为空', trigger: 'blur' }
+            { required: true, message: '专业不能为空', trigger: 'blur' }
           ],
           collegenum: [
-            { required: true, message: '学院编号不能为空', trigger: 'blur' }
+            { required: true, message: '学院不能为空', trigger: 'blur' }
           ]
         }
       }

@@ -12,6 +12,15 @@ export function list (params) {
   })
 }
 
+// 获取专业信息
+export function select (params) {
+  return request({
+    url: requestUrl('/major/major/select'),
+    method: 'get',
+    params: requestParam(params, 'get')
+  })
+}
+
 // 获取信息
 export function info (id) {
   return request({

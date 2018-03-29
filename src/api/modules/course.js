@@ -12,6 +12,15 @@ export function list (params) {
   })
 }
 
+// 根据专业id获取课程列表
+export function select (params) {
+  return request({
+    url: requestUrl('/course/course/select'),
+    method: 'get',
+    params: requestParam(params, 'get')
+  })
+}
+
 // 获取信息
 export function info (id) {
   return request({

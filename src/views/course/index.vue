@@ -45,6 +45,9 @@
         header-align="center"
         align="center"
         label="学院编号">
+        <template slot-scope="scope">
+          {{ scope.row.collegenum | collegenumFilter }}
+        </template>
       </el-table-column>
       <el-table-column
         prop="majornum"
@@ -90,6 +93,7 @@
   export default {
     data () {
       return {
+        collegeList: [],
         dataForm: {
           coursename: ''
         },
@@ -100,6 +104,23 @@
         dataListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false
+      }
+    },
+    filters: {
+      collegenumFilter (val) {
+        if (val === '01') {
+          return '01大学'
+        } else if (val === '02') {
+          return '02大学'
+        } else if (val === '03') {
+          return '03大学'
+        } else if (val === '04') {
+          return '04大学'
+        } else if (val === '05') {
+          return '05大学'
+        } else {
+          return '00大学'
+        }
       }
     },
     components: {
@@ -126,6 +147,9 @@
             this.totalPage = 0
           }
           this.dataListLoading = false
+        })
+        API.college.select().then(({data}) => {
+          this.collegeList = data && data.code === 0 ? data.collegeList : []
         })
       },
       // 每页数

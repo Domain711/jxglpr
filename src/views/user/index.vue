@@ -53,8 +53,9 @@
         align="center"
         label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
-          <el-tag v-else size="small">正常</el-tag>
+          <!-- <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-else size="small">正常</el-tag> -->
+          {{ scope.row.status | statusFilter }}
         </template>
       </el-table-column>
       <el-table-column
@@ -110,6 +111,15 @@
     },
     components: {
       AddOrUpdate
+    },
+    filters: {
+      statusFilter (val) {
+        if (val === 0) {
+          return '禁用'
+        } else {
+          return '启动'
+        }
+      }
     },
     activated () {
       this.getDataList()

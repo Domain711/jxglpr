@@ -4,17 +4,45 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-      <el-form-item label="学院" prop="collegenum">
-        <el-input v-model="dataForm.collegenum" placeholder="学院编号"></el-input>
-      </el-form-item>
+        <el-form-item label="所属学院" prop="collegenum">
+          <el-select v-model="dataForm.collegenum" placeholder="请选择学院" @change="getMajorListByCollegeId">
+            <el-option
+              v-for="college in collegeList"
+              :key="college.collegenum"
+              :label="college.collegename"
+              :value="college.collegenum">
+            </el-option>
+          </el-select>
+        </el-form-item>
       <el-form-item label="专业" prop="majornum">
-        <el-input v-model="dataForm.majornum" placeholder="专业编号"></el-input>
+        <el-select v-model="dataForm.majornum" placeholder="请选择专业" @change="getGradeListByMajorId">
+          <el-option
+            v-for="major in majorList"
+            :key="major.majornum"
+            :label="major.majorname"
+            :value="major.majornum">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="课程" prop="coursenum">
-        <el-input v-model="dataForm.coursenum" placeholder="课程编号"></el-input>
+        <el-select v-model="dataForm.coursenum" placeholder="请选择课程">
+          <el-option
+            v-for="course in courseList"
+            :key="course.coursenum"
+            :label="course.coursename"
+            :value="course.coursenum">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="班级" prop="gradenum">
-        <el-input v-model="dataForm.gradenum" placeholder="班级编号"></el-input>
+        <el-select v-model="dataForm.gradenum" placeholder="请选择班级">
+          <el-option
+            v-for="grade in gradeList"
+            :key="grade.gradenum"
+            :label="grade.gradename"
+            :value="grade.gradenum">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="学生" prop="studentnum">
         <el-input v-model="dataForm.studentnum" placeholder="学生学号"></el-input>
@@ -39,6 +67,10 @@
     data () {
       return {
         visible: false,
+        collegeList: [],
+        majorList: [],
+        gradeList: [],
+        courseList: [],
         dataForm: {
           id: 0,
           collegenum: '',
@@ -75,9 +107,14 @@
     methods: {
       init (id) {
         this.dataForm.id = id || 0
-        this.visible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
+        API.college.select().then(({data}) => {
+          this.collegeList = data && data.code === 0 ? data.collegeList : []
+        }).then(() => {
+          this.visible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].resetFields()
+          })
+        }).then(() => {
           if (this.dataForm.id) {
             API.exam.info(this.dataForm.id).then(({data}) => {
               if (data && data.code === 0) {
@@ -94,6 +131,30 @@
           }
         })
       },
+
+      // 根据学院id获取专业信息
+      getMajorListByCollegeId () {
+        var params = {
+          'collegenum': this.dataForm.collegenum
+        }
+        API.major.select(params).then(({data}) => {
+          this.majorList = data.majorList
+        })
+      },
+
+      // 根据专业id获取班级信息
+      getGradeListByMajorId () {
+        var params = {
+          'majornum': this.dataForm.majornum
+        }
+        API.grade.select(params).then(({data}) => {
+          this.gradeList = data.gradeList
+        })
+        API.course.select(params).then(({data}) => {
+          this.courseList = data.courseList
+        })
+      },
+
       // 表单提交
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {

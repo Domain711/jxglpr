@@ -4,19 +4,19 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-      <el-form-item label="被评价教师工号" prop="teachernum">
+      <el-form-item label="教师工号" prop="teachernum">
         <el-input v-model="dataForm.teachernum" placeholder="被评价教师工号"></el-input>
       </el-form-item>
-      <el-form-item label="人员类型 学生、老师" prop="asstype">
+      <el-form-item label="人员类型" prop="asstype">
         <el-input v-model="dataForm.asstype" placeholder="人员类型 学生、老师"></el-input>
       </el-form-item>
-      <el-form-item label="评价等级 优秀、良好、可接受" prop="asslevel">
+      <el-form-item label="评价等级" prop="asslevel">
         <el-input v-model="dataForm.asslevel" placeholder="评价等级 优秀、良好、可接受"></el-input>
       </el-form-item>
       <el-form-item label="评价分值" prop="assvalue">
         <el-input v-model="dataForm.assvalue" placeholder="评价分值"></el-input>
       </el-form-item>
-      <el-form-item label="评价工号/学号" prop="assnum">
+      <el-form-item label="工号/学号" prop="assnum">
         <el-input v-model="dataForm.assnum" placeholder="评价工号/学号"></el-input>
       </el-form-item>
       <el-form-item label="评价时间" prop="asstime">
