@@ -41,19 +41,16 @@
         label="课程名称">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="collegename"
         header-align="center"
         align="center"
-        label="学院编号">
-        <template slot-scope="scope">
-          {{ scope.row.collegenum | collegenumFilter }}
-        </template>
+        label="学院">
       </el-table-column>
       <el-table-column
-        prop="majornum"
+        prop="majorname"
         header-align="center"
         align="center"
-        label="专业编号">
+        label="专业">
       </el-table-column>
       <el-table-column
         prop="remark"
@@ -104,23 +101,6 @@
         dataListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false
-      }
-    },
-    filters: {
-      collegenumFilter (val) {
-        if (val === '01') {
-          return '01大学'
-        } else if (val === '02') {
-          return '02大学'
-        } else if (val === '03') {
-          return '03大学'
-        } else if (val === '04') {
-          return '04大学'
-        } else if (val === '05') {
-          return '05大学'
-        } else {
-          return '00大学'
-        }
       }
     },
     components: {

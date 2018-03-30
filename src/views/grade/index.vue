@@ -41,13 +41,13 @@
         label="班级名称">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="collegename"
         header-align="center"
         align="center"
         label="学院">
       </el-table-column>
       <el-table-column
-        prop="majornum"
+        prop="majorname"
         header-align="center"
         align="center"
         label="专业">

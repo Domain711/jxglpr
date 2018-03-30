@@ -41,10 +41,10 @@
         label="专业名称">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="collegename"
         header-align="center"
         align="center"
-        label="学院编号">
+        label="学院">
       </el-table-column>
       <el-table-column
         prop="remark"

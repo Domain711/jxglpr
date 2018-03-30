@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.num" placeholder="工号" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="姓名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -35,19 +35,19 @@
         label="工号">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="collegename"
         header-align="center"
         align="center"
         label="学院">
       </el-table-column>
       <el-table-column
-        prop="majornum"
+        prop="majorname"
         header-align="center"
         align="center"
         label="专业">
       </el-table-column>
       <el-table-column
-        prop="gradenum"
+        prop="gradename"
         header-align="center"
         align="center"
         label="班级">
@@ -59,7 +59,7 @@
         label="姓名">
       </el-table-column>
       <el-table-column
-        prop="coursenum"
+        prop="coursename"
         header-align="center"
         align="center"
         label="课程">
@@ -115,7 +115,7 @@
     data () {
       return {
         dataForm: {
-          num: ''
+          name: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -139,7 +139,7 @@
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          num: this.dataForm.num
+          name: this.dataForm.name
         }
         API.teachers.list(params).then(({data}) => {
           if (data && data.code === 0) {
