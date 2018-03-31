@@ -8,7 +8,7 @@
         <el-input v-model="dataForm.questiontype" placeholder="题目类型编号"></el-input>
       </el-form-item>
       <el-form-item label="类型名称" prop="questionname">
-        <el-input v-model="dataForm.questionname" placeholder="题目类型名称"></el-input>
+        <el-input v-model="dataForm.questiontypename" placeholder="题目类型名称"></el-input>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
@@ -37,7 +37,7 @@
           questiontype: [
             { required: true, message: '题目类型编号不能为空', trigger: 'blur' }
           ],
-          questionname: [
+          questiontypename: [
             { required: true, message: '题目类型名称不能为空', trigger: 'blur' }
           ],
           remark: [
@@ -56,7 +56,7 @@
             API.questiontype.info(this.dataForm.id).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.questiontype = data.questiontype.questiontype
-                this.dataForm.questionname = data.questiontype.questionname
+                this.dataForm.questiontypename = data.questiontype.questiontypename
                 this.dataForm.remark = data.questiontype.remark
               }
             })
@@ -70,7 +70,7 @@
             var params = {
               'id': this.dataForm.id || undefined,
               'questiontype': this.dataForm.questiontype,
-              'questionname': this.dataForm.questionname,
+              'questiontypename': this.dataForm.questiontypename,
               'remark': this.dataForm.remark
             }
             var tick = !this.dataForm.id ? API.questiontype.add(params) : API.questiontype.update(params)

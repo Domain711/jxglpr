@@ -29,25 +29,25 @@
         label="序号">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="collegename"
         header-align="center"
         align="center"
         label="学院">
       </el-table-column>
       <el-table-column
-        prop="majornum"
+        prop="majorname"
         header-align="center"
         align="center"
         label="专业">
       </el-table-column>
       <el-table-column
-        prop="coursenum"
+        prop="coursename"
         header-align="center"
         align="center"
         label="课程">
       </el-table-column>
       <el-table-column
-        prop="gradenum"
+        prop="gradename"
         header-align="center"
         align="center"
         label="班级">

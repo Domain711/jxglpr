@@ -50,9 +50,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-input v-model="dataForm.type" placeholder="类型"></el-input>
-      </el-form-item>
       <el-form-item label="学时" prop="period">
         <el-input v-model="dataForm.period" placeholder="学时"></el-input>
       </el-form-item>
@@ -108,9 +105,6 @@
           coursenum: [
             { required: true, message: '教授课程编号不能为空', trigger: 'blur' }
           ],
-          type: [
-            { required: true, message: '类型不能为空', trigger: 'blur' }
-          ],
           period: [
             { required: true, message: '学时不能为空', trigger: 'blur' }
           ],
@@ -125,6 +119,21 @@
         this.dataForm.id = id || 0
         API.college.select().then(({data}) => {
           this.collegeList = data && data.code === 0 ? data.collegeList : []
+          var params = {
+            'collegenum': this.dataForm.collegenum
+          }
+          API.major.select(params).then(({data}) => {
+            this.majorList = data.majorList
+          })
+          var params1 = {
+            'majornum': this.dataForm.majornum
+          }
+          API.grade.select(params1).then(({data}) => {
+            this.gradeList = data.gradeList
+          })
+          API.course.select(params1).then(({data}) => {
+            this.courseList = data.courseList
+          })
         }).then(() => {
           this.visible = true
           this.$nextTick(() => {

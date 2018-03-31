@@ -12,6 +12,15 @@ export function list (params) {
   })
 }
 
+// 获取题型信息
+export function select () {
+  return request({
+    url: requestUrl('/questiontype/questiontype/select'),
+    method: 'get',
+    params: requestParam({}, 'get')
+  })
+}
+
 // 获取信息
 export function info (id) {
   return request({

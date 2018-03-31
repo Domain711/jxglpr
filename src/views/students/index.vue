@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.studentnum" placeholder="学号" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="姓名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -35,40 +35,28 @@
         label="学号">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="collegename"
         header-align="center"
         align="center"
-        label="学院编号">
+        label="学院">
       </el-table-column>
       <el-table-column
-        prop="majornum"
+        prop="majorname"
         header-align="center"
         align="center"
-        label="专业编号">
+        label="专业">
       </el-table-column>
       <el-table-column
-        prop="gradenum"
+        prop="gradename"
         header-align="center"
         align="center"
-        label="班级编号">
+        label="班级">
       </el-table-column>
       <el-table-column
         prop="name"
         header-align="center"
         align="center"
         label="姓名">
-      </el-table-column>
-      <el-table-column
-        prop="type"
-        header-align="center"
-        align="center"
-        label="类型">
-      </el-table-column>
-      <el-table-column
-        prop="term"
-        header-align="center"
-        align="center"
-        label="学期">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -103,7 +91,7 @@
     data () {
       return {
         dataForm: {
-          studentnum: ''
+          name: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -127,7 +115,7 @@
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          studentnum: this.dataForm.studentnum
+          name: this.dataForm.name
         }
         API.students.list(params).then(({data}) => {
           if (data && data.code === 0) {

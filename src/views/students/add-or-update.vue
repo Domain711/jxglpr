@@ -7,23 +7,38 @@
       <el-form-item label="学号" prop="studentnum">
         <el-input v-model="dataForm.studentnum" placeholder="学号"></el-input>
       </el-form-item>
-      <el-form-item label="学院编号" prop="collegenum">
-        <el-input v-model="dataForm.collegenum" placeholder="学院编号"></el-input>
-      </el-form-item>
-      <el-form-item label="专业编号" prop="majornum">
-        <el-input v-model="dataForm.majornum" placeholder="专业编号"></el-input>
-      </el-form-item>
-      <el-form-item label="班级编号" prop="gradenum">
-        <el-input v-model="dataForm.gradenum" placeholder="班级编号"></el-input>
-      </el-form-item>
       <el-form-item label="姓名" prop="name">
         <el-input v-model="dataForm.name" placeholder="姓名"></el-input>
       </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-input v-model="dataForm.type" placeholder="类型"></el-input>
+      <el-form-item label="学院" prop="collegenum">
+        <el-select v-model="dataForm.collegenum" placeholder="请选择学院" @change="getMajorListByCollegeId">
+          <el-option
+            v-for="college in collegeList"
+            :key="college.collegenum"
+            :label="college.collegename"
+            :value="college.collegenum">
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="学期" prop="term">
-        <el-input v-model="dataForm.term" placeholder="学期"></el-input>
+      <el-form-item label="专业" prop="majornum">
+        <el-select v-model="dataForm.majornum" placeholder="请选择专业" @change="getGradeListByMajorId">
+          <el-option
+            v-for="major in majorList"
+            :key="major.majornum"
+            :label="major.majorname"
+            :value="major.majornum">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="班级" prop="gradenum">
+        <el-select v-model="dataForm.gradenum" placeholder="请选择班级">
+          <el-option
+            v-for="grade in gradeList"
+            :key="grade.gradenum"
+            :label="grade.gradename"
+            :value="grade.gradenum">
+          </el-option>
+        </el-select>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -39,6 +54,9 @@
     data () {
       return {
         visible: false,
+        collegeList: [],
+        majorList: [],
+        gradeList: [],
         dataForm: {
           id: 0,
           studentnum: '',
@@ -54,22 +72,16 @@
             { required: true, message: '学号不能为空', trigger: 'blur' }
           ],
           collegenum: [
-            { required: true, message: '学院编号不能为空', trigger: 'blur' }
+            { required: true, message: '学院不能为空', trigger: 'blur' }
           ],
           majornum: [
-            { required: true, message: '专业编号不能为空', trigger: 'blur' }
+            { required: true, message: '专业不能为空', trigger: 'blur' }
           ],
           gradenum: [
-            { required: true, message: '班级编号不能为空', trigger: 'blur' }
+            { required: true, message: '班级不能为空', trigger: 'blur' }
           ],
           name: [
             { required: true, message: '姓名不能为空', trigger: 'blur' }
-          ],
-          type: [
-            { required: true, message: '类型不能为空', trigger: 'blur' }
-          ],
-          term: [
-            { required: true, message: '学期不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -77,9 +89,14 @@
     methods: {
       init (id) {
         this.dataForm.id = id || 0
-        this.visible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
+        API.college.select().then(({data}) => {
+          this.collegeList = data && data.code === 0 ? data.collegeList : []
+        }).then(() => {
+          this.visible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].resetFields()
+          })
+        }).then(() => {
           if (this.dataForm.id) {
             API.students.info(this.dataForm.id).then(({data}) => {
               if (data && data.code === 0) {
@@ -93,6 +110,29 @@
               }
             })
           }
+        })
+      },
+
+      // 根据学院id获取专业信息
+      getMajorListByCollegeId () {
+        var params = {
+          'collegenum': this.dataForm.collegenum
+        }
+        API.major.select(params).then(({data}) => {
+          this.majorList = data.majorList
+        })
+      },
+
+      // 根据专业id获取班级信息
+      getGradeListByMajorId () {
+        var params = {
+          'majornum': this.dataForm.majornum
+        }
+        API.grade.select(params).then(({data}) => {
+          this.gradeList = data.gradeList
+        })
+        API.course.select(params).then(({data}) => {
+          this.courseList = data.courseList
         })
       },
       // 表单提交

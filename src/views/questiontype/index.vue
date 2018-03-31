@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.questionname" placeholder="类型名称" clearable></el-input>
+        <el-input v-model="dataForm.questiontypename" placeholder="类型名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -35,7 +35,7 @@
         label="题目类型">
       </el-table-column>
       <el-table-column
-        prop="questionname"
+        prop="questiontypename"
         header-align="center"
         align="center"
         label="类型名称">
@@ -79,7 +79,7 @@
     data () {
       return {
         dataForm: {
-          questionname: ''
+          questiontypename: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -103,7 +103,7 @@
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          questionname: this.dataForm.questionname
+          questiontypename: this.dataForm.questiontypename
         }
         API.questiontype.list(params).then(({data}) => {
           if (data && data.code === 0) {

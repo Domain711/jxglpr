@@ -33,27 +33,32 @@
         header-align="center"
         align="center"
         label="学期">
+        <template slot-scope="scope">
+          <!-- <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-else size="small">正常</el-tag> -->
+          {{ scope.row.term | statusFilter }}
+        </template>
       </el-table-column>
       <el-table-column
-        prop="collegenum"
+        prop="collegename"
         header-align="center"
         align="center"
         label="学院">
       </el-table-column>
       <el-table-column
-        prop="majornum"
+        prop="majorname"
         header-align="center"
         align="center"
         label="专业">
       </el-table-column>
       <el-table-column
-        prop="gradenum"
+        prop="gradename"
         header-align="center"
         align="center"
         label="班级">
       </el-table-column>
       <el-table-column
-        prop="coursenum"
+        prop="coursename"
         header-align="center"
         align="center"
         label="课程">
@@ -122,6 +127,15 @@
     },
     components: {
       AddOrUpdate
+    },
+    filters: {
+      statusFilter (val) {
+        if (val === '1') {
+          return '上学期'
+        } else {
+          return '下学期'
+        }
+      }
     },
     activated () {
       this.getDataList()
