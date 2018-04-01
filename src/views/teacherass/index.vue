@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.teachernum" placeholder="教师工号" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -35,28 +35,32 @@
         label="工号">
       </el-table-column>
       <el-table-column
-        prop="asstype"
-        header-align="center"
-        align="center"
-        label="人员类型">
-      </el-table-column>
-      <el-table-column
         prop="asslevel"
         header-align="center"
         align="center"
         label="评价等级">
-      </el-table-column>
-      <el-table-column
-        prop="assvalue"
-        header-align="center"
-        align="center"
-        label="分值">
+        <template slot-scope="scope">
+          <!-- <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-else size="small">正常</el-tag> -->
+          {{ scope.row.asslevel | levelFilter }}
+        </template>
       </el-table-column>
       <el-table-column
         prop="assnum"
         header-align="center"
         align="center"
         label="评价工号/学号">
+      </el-table-column>
+      <el-table-column
+        prop="asstype"
+        header-align="center"
+        align="center"
+        label="人员类型">
+        <template slot-scope="scope">
+          <!-- <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-else size="small">正常</el-tag> -->
+          {{ scope.row.asstype | statusFilter }}
+        </template>
       </el-table-column>
       <el-table-column
         prop="asstime"
@@ -69,6 +73,11 @@
         header-align="center"
         align="center"
         label="学期">
+        <template slot-scope="scope">
+          <!-- <el-tag v-if="scope.row.status === 0" size="small" type="danger">禁用</el-tag>
+          <el-tag v-else size="small">正常</el-tag> -->
+          {{ scope.row.term | termFilter }}
+        </template>
       </el-table-column>
       <el-table-column
         prop="assremark"
@@ -109,7 +118,7 @@
     data () {
       return {
         dataForm: {
-          key: ''
+          teachernum: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -123,6 +132,35 @@
     components: {
       AddOrUpdate
     },
+    filters: {
+      statusFilter (val) {
+        if (val === '3') {
+          return '教师'
+        } else {
+          return '学生'
+        }
+      },
+      termFilter  (val) {
+        if (val === '1') {
+          return '上学期'
+        } else {
+          return '下学期'
+        }
+      },
+      levelFilter (val) {
+        if (val === '3') {
+          return '优秀'
+        } else if (val === '2') {
+          return '良好'
+        } else if (val === '1') {
+          return '可接受'
+        } else if (val === '0') {
+          return '需改进'
+        } else if (val === '-1') {
+          return '不可接受'
+        }
+      }
+    },
     activated () {
       this.getDataList()
     },
@@ -133,7 +171,7 @@
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          key: this.dataForm.key
+          teachernum: this.dataForm.teachernum
         }
         API.teacherass.list(params).then(({data}) => {
           if (data && data.code === 0) {

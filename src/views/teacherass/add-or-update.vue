@@ -7,23 +7,25 @@
       <el-form-item label="教师工号" prop="teachernum">
         <el-input v-model="dataForm.teachernum" placeholder="被评价教师工号"></el-input>
       </el-form-item>
-      <el-form-item label="人员类型" prop="asstype">
-        <el-input v-model="dataForm.asstype" placeholder="人员类型 学生、老师"></el-input>
-      </el-form-item>
       <el-form-item label="评价等级" prop="asslevel">
-        <el-input v-model="dataForm.asslevel" placeholder="评价等级 优秀、良好、可接受"></el-input>
-      </el-form-item>
-      <el-form-item label="评价分值" prop="assvalue">
-        <el-input v-model="dataForm.assvalue" placeholder="评价分值"></el-input>
-      </el-form-item>
-      <el-form-item label="工号/学号" prop="assnum">
-        <el-input v-model="dataForm.assnum" placeholder="评价工号/学号"></el-input>
-      </el-form-item>
-      <el-form-item label="评价时间" prop="asstime">
-        <el-input v-model="dataForm.asstime" placeholder="评价时间"></el-input>
+        <el-select v-model="dataForm.asslevel" placeholder="请选择学期">
+          <el-option
+            v-for="level in levelOptions"
+            :key="level.value"
+            :label="level.label"
+            :value="level.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="学期" prop="term">
-        <el-input v-model="dataForm.term" placeholder="学期"></el-input>
+        <el-select v-model="dataForm.term" placeholder="请选择学期">
+          <el-option
+            v-for="term in termOptions"
+            :key="term.value"
+            :label="term.label"
+            :value="term.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="评价备注" prop="assremark">
         <el-input v-model="dataForm.assremark" placeholder="评价备注"></el-input>
@@ -42,6 +44,37 @@
     data () {
       return {
         visible: false,
+        termOptions: [{
+          value: '1',
+          label: '上学期'
+        }, {
+          value: '2',
+          label: '下学期'
+        }],
+        levelOptions: [{
+          value: '3',
+          label: '优秀'
+        }, {
+          value: '2',
+          label: '良好'
+        }, {
+          value: '1',
+          label: '可接受'
+        }, {
+          value: '0',
+          label: '需改进'
+        }, {
+          value: '-1',
+          label: '不接受'
+        }
+        ],
+        options: [{
+          value: '1',
+          label: '上学期'
+        }, {
+          value: '2',
+          label: '下学期'
+        }],
         dataForm: {
           id: 0,
           teachernum: '',
