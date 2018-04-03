@@ -2,44 +2,12 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.questionnum" placeholder="题目编号" style="width: 150px" clearable></el-input>
-        <el-select v-model="dataForm.collegenum" placeholder="请选择学院" style="width: 150px" @change="getMajorListByCollegeId">
-          <el-option
-            v-for="college in collegeList"
-            :key="college.collegenum"
-            :label="college.collegename"
-            :value="college.collegenum">
-          </el-option>
-        </el-select>
-        <el-select v-model="dataForm.majornum" placeholder="请选择专业" style="width: 150px" @change="getGradeListByMajorId">
-          <el-option
-            v-for="major in majorList"
-            :key="major.majornum"
-            :label="major.majorname"
-            :value="major.majornum">
-          </el-option>
-        </el-select>
-        <el-select v-model="dataForm.gradenum" placeholder="请选择班级" style="width: 150px">
-          <el-option
-            v-for="grade in gradeList"
-            :key="grade.gradenum"
-            :label="grade.gradename"
-            :value="grade.gradenum">
-          </el-option>
-        </el-select>
-        <el-select v-model="dataForm.coursenum" placeholder="请选择课程" style="width: 150px">
-          <el-option
-            v-for="course in courseList"
-            :key="course.coursenum"
-            :label="course.coursename"
-            :value="course.coursenum">
-          </el-option>
-        </el-select>
+        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('question:question:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('question:question:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button v-if="isAuth('tactics:tactics:save')" type="primary" @click="addOrUpdateHandle()">组卷</el-button>
+        <el-button v-if="isAuth('tactics:tactics:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -55,10 +23,22 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="id"
+        prop="tacid"
         header-align="center"
         align="center"
-        label="序号">
+        label="">
+      </el-table-column>
+      <el-table-column
+        prop="tacname"
+        header-align="center"
+        align="center"
+        label="试卷名称">
+      </el-table-column>
+      <el-table-column
+        prop="collegenum"
+        header-align="center"
+        align="center"
+        label="学院编号">
       </el-table-column>
       <el-table-column
         prop="collegename"
@@ -67,46 +47,46 @@
         label="学院">
       </el-table-column>
       <el-table-column
+        prop="majornum"
+        header-align="center"
+        align="center"
+        label="专业编号">
+      </el-table-column>
+      <el-table-column
         prop="majorname"
         header-align="center"
         align="center"
-        label="专业">
+        label="专业名称">
+      </el-table-column>
+      <el-table-column
+        prop="coursenum"
+        header-align="center"
+        align="center"
+        label="课程编号">
       </el-table-column>
       <el-table-column
         prop="coursename"
         header-align="center"
         align="center"
-        label="课程">
+        label="课程名称">
       </el-table-column>
       <el-table-column
-        prop="gradename"
+        prop="content"
         header-align="center"
         align="center"
-        label="班级">
+        label="试卷内容">
       </el-table-column>
       <el-table-column
-        prop="questionnum"
+        prop="createid"
         header-align="center"
         align="center"
-        label="编号">
+        label="创建人">
       </el-table-column>
       <el-table-column
-        prop="questiontypename"
+        prop="createtime"
         header-align="center"
         align="center"
-        label="题目类型">
-      </el-table-column>
-      <el-table-column
-        prop="questioncotent"
-        header-align="center"
-        align="center"
-        label="题目内容">
-      </el-table-column>
-      <el-table-column
-        prop="remark"
-        header-align="center"
-        align="center"
-        label="备注">
+        label="创建时间">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -115,8 +95,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.tacid)">修改</el-button>
+          <el-button type="text" size="small" @click="deleteHandle(scope.row.tacid)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -140,15 +120,8 @@
   export default {
     data () {
       return {
-        collegeList: [],
-        majorList: [],
-        gradeList: [],
-        courseList: [],
         dataForm: {
-          questionnum: '',
-          majornum: '',
-          gradenum: '',
-          coursenum: ''
+          key: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -169,19 +142,12 @@
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
-        API.college.select().then(({data}) => {
-          this.collegeList = data && data.code === 0 ? data.collegeList : []
-        })
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          questionnum: this.dataForm.questionnum,
-          collegenum: this.dataForm.collegenum,
-          majornum: this.dataForm.majornum,
-          gradenum: this.dataForm.gradenum,
-          coursenum: this.dataForm.coursenum
+          key: this.dataForm.key
         }
-        API.question.list(params).then(({data}) => {
+        API.tactics.list(params).then(({data}) => {
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
@@ -190,28 +156,6 @@
             this.totalPage = 0
           }
           this.dataListLoading = false
-        })
-      },
-      // 根据学院id获取专业信息
-      getMajorListByCollegeId () {
-        var params = {
-          'collegenum': this.dataForm.collegenum
-        }
-        API.major.select(params).then(({data}) => {
-          this.majorList = data.majorList
-        })
-      },
-
-      // 根据专业id获取班级信息
-      getGradeListByMajorId () {
-        var params = {
-          'majornum': this.dataForm.majornum
-        }
-        API.grade.select(params).then(({data}) => {
-          this.gradeList = data.gradeList
-        })
-        API.course.select(params).then(({data}) => {
-          this.courseList = data.courseList
         })
       },
       // 每页数
@@ -239,14 +183,14 @@
       // 删除
       deleteHandle (id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.id
+          return item.tacid
         })
         this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          API.question.del(ids).then(({data}) => {
+          API.tactics.del(ids).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',

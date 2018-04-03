@@ -2,7 +2,39 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.studentnum" placeholder="学号" clearable></el-input>
+        <el-input v-model="dataForm.studentnum" placeholder="学号" style="width: 150px" clearable></el-input>
+        <el-select v-model="dataForm.collegenum" placeholder="请选择学院" @change="getMajorListByCollegeId">
+          <el-option
+            v-for="college in collegeList"
+            :key="college.collegenum"
+            :label="college.collegename"
+            :value="college.collegenum">
+          </el-option>
+        </el-select>
+        <el-select v-model="dataForm.majornum" placeholder="请选择专业" @change="getGradeListByMajorId">
+          <el-option
+            v-for="major in majorList"
+            :key="major.majornum"
+            :label="major.majorname"
+            :value="major.majornum">
+          </el-option>
+        </el-select>
+        <el-select v-model="dataForm.gradenum" placeholder="请选择班级">
+          <el-option
+            v-for="grade in gradeList"
+            :key="grade.gradenum"
+            :label="grade.gradename"
+            :value="grade.gradenum">
+          </el-option>
+        </el-select>
+        <el-select v-model="dataForm.coursenum" placeholder="请选择课程">
+          <el-option
+            v-for="course in courseList"
+            :key="course.coursenum"
+            :label="course.coursename"
+            :value="course.coursenum">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -108,8 +140,16 @@
   export default {
     data () {
       return {
+        collegeList: [],
+        majorList: [],
+        gradeList: [],
+        courseList: [],
         dataForm: {
-          studentnum: ''
+          studentnum: '',
+          collegenum: '',
+          majornum: '',
+          gradenum: '',
+          coursenum: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -130,10 +170,17 @@
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
+        API.college.select().then(({data}) => {
+          this.collegeList = data && data.code === 0 ? data.collegeList : []
+        })
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          studentnum: this.dataForm.studentnum
+          studentnum: this.dataForm.studentnum,
+          collegenum: this.dataForm.collegenum,
+          majornum: this.dataForm.majornum,
+          gradenum: this.dataForm.gradenum,
+          coursenum: this.dataForm.coursenum
         }
         API.exam.list(params).then(({data}) => {
           if (data && data.code === 0) {
@@ -144,6 +191,29 @@
             this.totalPage = 0
           }
           this.dataListLoading = false
+        })
+      },
+
+      // 根据学院id获取专业信息
+      getMajorListByCollegeId () {
+        var params = {
+          'collegenum': this.dataForm.collegenum
+        }
+        API.major.select(params).then(({data}) => {
+          this.majorList = data.majorList
+        })
+      },
+
+      // 根据专业id获取班级信息
+      getGradeListByMajorId () {
+        var params = {
+          'majornum': this.dataForm.majornum
+        }
+        API.grade.select(params).then(({data}) => {
+          this.gradeList = data.gradeList
+        })
+        API.course.select(params).then(({data}) => {
+          this.courseList = data.courseList
         })
       },
       // 每页数

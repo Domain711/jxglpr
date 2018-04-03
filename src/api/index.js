@@ -19,6 +19,7 @@ import * as students from './modules/students'
 import * as teachplan from './modules/teachplan'
 import * as lessonplan from './modules/lessonplan'
 import * as achievements from './modules/achievements'
+import * as tactics from './modules/tactics'
 import * as schedule from './modules/schedule'
 
 export default {
@@ -43,5 +44,6 @@ export default {
   teachplan,        // 教案上传管理
   lessonplan,        // 教学计划管理
   achievements,        // 科研成果管理
+  tactics,        // 组卷策略
   schedule    // 定时任务
 }

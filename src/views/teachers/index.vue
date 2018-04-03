@@ -2,7 +2,15 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.name" placeholder="姓名" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="教师姓名"  style="width:230px" clearable></el-input>
+        <el-select v-model="dataForm.assType" placeholder="请选择评价类型" style="width:200px" clearable>
+          <el-option
+            v-for="term in termOptions"
+            :key="term.value"
+            :label="term.label"
+            :value="term.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -115,8 +123,20 @@
     data () {
       return {
         dataForm: {
-          name: ''
+          name: '',
+          assType: ''
         },
+        termOptions: [{
+          value: '1',
+          label: '待评价'
+        }, {
+          value: '2',
+          label: '已评价'
+        }, {
+          value: '',
+          label: '全部评价类型'
+        }
+        ],
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -139,7 +159,8 @@
         var params = {
           page: this.pageIndex,
           limit: this.pageSize,
-          name: this.dataForm.name
+          name: this.dataForm.name,
+          assType: this.dataForm.assType
         }
         API.teachers.list(params).then(({data}) => {
           if (data && data.code === 0) {

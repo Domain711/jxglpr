@@ -20,10 +20,10 @@
         <el-input v-model="dataForm.mobile" placeholder="手机号"></el-input>
       </el-form-item>
       <el-form-item label="角色" size="mini" prop="roleIdList">
-        <el-checkbox-group v-model="dataForm.roleIdList">
-          <el-checkbox v-for="role in roleList" :key="role.roleId" :label="role.roleId">{{ role.roleName }}</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
+      <el-checkbox-group v-model="dataForm.roleIdList">
+        <el-checkbox v-for="role in roleList" :key="role.roleId" :label="role.roleId">{{ role.roleName }}</el-checkbox>
+      </el-checkbox-group>
+    </el-form-item>
       <el-form-item label="状态" size="mini" prop="status">
         <el-radio-group v-model="dataForm.status">
           <el-radio :label="0">禁用</el-radio>
