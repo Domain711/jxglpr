@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '组卷策略选择' : '修改'"
+    :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
@@ -34,10 +34,13 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="题型" size="mini" prop="qtypeList">
-        <el-checkbox-group v-model="dataForm.qtypeList">
-          <el-checkbox v-for="qtype in questiontypeList" :key="qtype.questiontype" :label="qtype.questiontype">{{ qtype.questiontypename }}</el-checkbox>
+      <el-form-item label="题型" prop="qtype">
+        <el-checkbox-group v-model="dataForm.qtype">
+        <el-checkbox v-for="questiontype in questiontypeList" :key="questiontype.questiontype" :label="questiontype.questiontype">{{ questiontype.questiontypename }}</el-checkbox>
         </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="权重" prop="weight">
+        <el-input v-model="dataForm.weight" placeholder="权重"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -59,21 +62,55 @@
         questiontypeList: [],
         dataForm: {
           tacid: 0,
+          tacname: '',
           collegenum: '',
+          collegename: '',
           majornum: '',
+          majorname: '',
           coursenum: '',
+          coursename: '',
           content: '',
-          qtypeList: ''
+          createid: '',
+          createtime: '',
+          qtype: '',
+          weight: ''
         },
         dataRule: {
+          tacname: [
+            { required: true, message: '试卷名称不能为空', trigger: 'blur' }
+          ],
           collegenum: [
             { required: true, message: '学院编号不能为空', trigger: 'blur' }
+          ],
+          collegename: [
+            { required: true, message: '学院不能为空', trigger: 'blur' }
           ],
           majornum: [
             { required: true, message: '专业编号不能为空', trigger: 'blur' }
           ],
+          majorname: [
+            { required: true, message: '专业名称不能为空', trigger: 'blur' }
+          ],
           coursenum: [
             { required: true, message: '课程编号不能为空', trigger: 'blur' }
+          ],
+          coursename: [
+            { required: true, message: '课程名称不能为空', trigger: 'blur' }
+          ],
+          content: [
+            { required: true, message: '试卷内容不能为空', trigger: 'blur' }
+          ],
+          createid: [
+            { required: true, message: '创建人不能为空', trigger: 'blur' }
+          ],
+          createtime: [
+            { required: true, message: '创建时间不能为空', trigger: 'blur' }
+          ],
+          qtype: [
+            { required: true, message: '题型不能为空', trigger: 'blur' }
+          ],
+          weight: [
+            { required: true, message: '权重不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -117,6 +154,8 @@
                 this.dataForm.content = data.tactics.content
                 this.dataForm.createid = data.tactics.createid
                 this.dataForm.createtime = data.tactics.createtime
+                this.dataForm.qtype = data.tactics.qtype
+                this.dataForm.weight = data.tactics.weight
               }
             })
           }
@@ -151,11 +190,18 @@
           if (valid) {
             var params = {
               'tacid': this.dataForm.tacid || undefined,
+              'tacname': this.dataForm.tacname,
               'collegenum': this.dataForm.collegenum,
               'collegename': this.dataForm.collegename,
               'majornum': this.dataForm.majornum,
+              'majorname': this.dataForm.majorname,
               'coursenum': this.dataForm.coursenum,
-              'content': this.dataForm.content
+              'coursename': this.dataForm.coursename,
+              'content': this.dataForm.content,
+              'createid': this.dataForm.createid,
+              'createtime': this.dataForm.createtime,
+              'qtype': this.dataForm.qtype,
+              'weight': this.dataForm.weight
             }
             var tick = !this.dataForm.tacid ? API.tactics.add(params) : API.tactics.update(params)
             tick.then(({data}) => {

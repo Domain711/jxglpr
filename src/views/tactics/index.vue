@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('tactics:tactics:save')" type="primary" @click="addOrUpdateHandle()">组卷</el-button>
+        <el-button v-if="isAuth('tactics:tactics:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('tactics:tactics:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
@@ -35,22 +35,10 @@
         label="试卷名称">
       </el-table-column>
       <el-table-column
-        prop="collegenum"
-        header-align="center"
-        align="center"
-        label="学院编号">
-      </el-table-column>
-      <el-table-column
         prop="collegename"
         header-align="center"
         align="center"
         label="学院">
-      </el-table-column>
-      <el-table-column
-        prop="majornum"
-        header-align="center"
-        align="center"
-        label="专业编号">
       </el-table-column>
       <el-table-column
         prop="majorname"
@@ -59,34 +47,10 @@
         label="专业名称">
       </el-table-column>
       <el-table-column
-        prop="coursenum"
-        header-align="center"
-        align="center"
-        label="课程编号">
-      </el-table-column>
-      <el-table-column
         prop="coursename"
         header-align="center"
         align="center"
         label="课程名称">
-      </el-table-column>
-      <el-table-column
-        prop="content"
-        header-align="center"
-        align="center"
-        label="试卷内容">
-      </el-table-column>
-      <el-table-column
-        prop="createid"
-        header-align="center"
-        align="center"
-        label="创建人">
-      </el-table-column>
-      <el-table-column
-        prop="createtime"
-        header-align="center"
-        align="center"
-        label="创建时间">
       </el-table-column>
       <el-table-column
         fixed="right"
