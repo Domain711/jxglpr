@@ -52,16 +52,17 @@
         align="center"
         label="课程名称">
       </el-table-column>
-      <!--<el-table-column-->
-        <!--fixed="right"-->
-        <!--header-align="center"-->
-        <!--align="center"-->
-        <!--width="150"-->
-        <!--label="操作">-->
-        <!--<template slot-scope="scope">-->
-          <!--&lt;!&ndash;<el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.tacid)">修改</el-button>&ndash;&gt;-->
-          <!--&lt;!&ndash;<el-button type="text" size="small" @click="deleteHandle(scope.row.tacid)">删除</el-button>&ndash;&gt;-->
-        <!--</template>-->
+      <el-table-column
+        fixed="right"
+        header-align="center"
+        align="center"
+        width="150"
+        label="操作">
+        <template slot-scope="scope">
+          <!--<el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.tacid)">查看</el-button>-->
+          <el-button type="text" size="small" @click="detailHandle(scope.row.tacid)">查看</el-button>
+          <!--<el-button type="text" size="small" @click="deleteHandle(scope.row.tacid)">删除</el-button>-->
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination
@@ -75,6 +76,7 @@
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+    <!--<detail v-if="detailVisible" ref="detail" @refreshDataList="getDataList"></detail>-->
   </div>
 </template>
 
@@ -93,11 +95,13 @@
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        addOrUpdateVisible: false
+        addOrUpdateVisible: false,
+        // detailVisible: false
       }
     },
     components: {
       AddOrUpdate
+      // detail
     },
     activated () {
       this.getDataList()
@@ -142,6 +146,11 @@
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
+        })
+      },
+      detailHandle (id) {
+        API.tactics.info(id).then(({data}) => {
+          alert(data)
         })
       },
       // 删除
