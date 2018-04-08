@@ -34,13 +34,95 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="题型" prop="qtype">
-        <el-checkbox-group v-model="dataForm.qtype">
-        <el-checkbox v-for="questiontype in questiontypeList" :key="questiontype.questiontype" :label="questiontype.questiontype">{{ questiontype.questiontypename }}</el-checkbox>
-        </el-checkbox-group>
+      <el-form-item label="题型分布" prop="qtype">
+          <el-select v-model="dataForm.qtype" placeholder="请选择题型">
+            <el-option
+              v-for="questiontype in questiontypeList"
+              :key="questiontype.questiontype"
+              :label="questiontype.questiontypename"
+              :value="questiontype.questiontype">
+            </el-option>
+          </el-select>
+          <el-input v-model="dataForm.c2" placeholder="试题数" style="width: 80px"></el-input>
+          <el-input v-model="dataForm.f2" placeholder="分数" style="width: 80px"></el-input>
+          <el-input v-model="dataForm.z2" placeholder="知识点" style="width: 120px"></el-input>
+        <el-select v-model="dataForm.qtype2" placeholder="请选择题型">
+          <el-option
+            v-for="questiontype in questiontypeList"
+            :key="questiontype.questiontype"
+            :label="questiontype.questiontypename"
+            :value="questiontype.questiontype">
+          </el-option>
+        </el-select>
+        <el-input v-model="dataForm.c3" placeholder="试题数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.f3" placeholder="分数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.z3" placeholder="知识点" style="width: 120px"></el-input>
+        <el-select v-model="dataForm.qtype3" placeholder="请选择题型">
+          <el-option
+            v-for="questiontype in questiontypeList"
+            :key="questiontype.questiontype"
+            :label="questiontype.questiontypename"
+            :value="questiontype.questiontype">
+          </el-option>
+        </el-select>
+        <el-input v-model="dataForm.c4" placeholder="试题数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.f4" placeholder="分数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.z4" placeholder="知识点" style="width: 120px"></el-input>
+        <el-select v-model="dataForm.qtype4" placeholder="请选择题型">
+          <el-option
+            v-for="questiontype in questiontypeList"
+            :key="questiontype.questiontype"
+            :label="questiontype.questiontypename"
+            :value="questiontype.questiontype">
+          </el-option>
+        </el-select>
+        <el-input v-model="dataForm.c5" placeholder="试题数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.f5" placeholder="分数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.z5" placeholder="知识点" style="width: 120px"></el-input>
+        <el-select v-model="dataForm.qtype5" placeholder="请选择题型">
+          <el-option
+            v-for="questiontype in questiontypeList"
+            :key="questiontype.questiontype"
+            :label="questiontype.questiontypename"
+            :value="questiontype.questiontype">
+          </el-option>
+        </el-select>
+        <el-input v-model="dataForm.c6" placeholder="试题数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.f6" placeholder="分数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.z6" placeholder="知识点" style="width: 120px"></el-input>
+        <el-select v-model="dataForm.qtype6" placeholder="请选择题型">
+          <el-option
+            v-for="questiontype in questiontypeList"
+            :key="questiontype.questiontype"
+            :label="questiontype.questiontypename"
+            :value="questiontype.questiontype">
+          </el-option>
+        </el-select>
+        <el-input v-model="dataForm.c7" placeholder="试题数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.f7" placeholder="分数" style="width: 80px"></el-input>
+        <el-input v-model="dataForm.z7" placeholder="知识点" style="width: 120px"></el-input>
       </el-form-item>
-      <el-form-item label="权重" prop="weight">
-        <el-input v-model="dataForm.weight" placeholder="权重"></el-input>
+      <el-form-item label="试卷标题" prop="weight">
+        <el-input v-model="dataForm.bt" placeholder="试卷标题"></el-input>
+      </el-form-item>
+      <el-form-item label="考试时间" prop="weight">
+        <el-date-picker
+          v-model="dataForm.sj"
+          type="datetime"
+          placeholder="选择日期时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="满分值" prop="weight">
+        <el-input v-model="dataForm.mfz" placeholder="满分值"></el-input>
+      </el-form-item>
+      <el-form-item label="平均难度" prop="weight">
+        <el-input v-model="dataForm.pjnd" placeholder="平均难度"></el-input>
+      </el-form-item>
+      <el-form-item label="均区分度" prop="weight">
+        <el-input v-model="dataForm.pjqfd" placeholder="均区分度"></el-input>
+      </el-form-item>
+      <el-form-item label="知识点" prop="weight">
+        <el-input v-model="dataForm.kczsd" placeholder="知识点"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -99,18 +181,6 @@
           ],
           content: [
             { required: true, message: '试卷内容不能为空', trigger: 'blur' }
-          ],
-          createid: [
-            { required: true, message: '创建人不能为空', trigger: 'blur' }
-          ],
-          createtime: [
-            { required: true, message: '创建时间不能为空', trigger: 'blur' }
-          ],
-          qtype: [
-            { required: true, message: '题型不能为空', trigger: 'blur' }
-          ],
-          weight: [
-            { required: true, message: '权重不能为空', trigger: 'blur' }
           ]
         }
       }
