@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('tactics:tactics:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('tactics:tactics:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <!--<el-button v-if="isAuth('tactics:paper:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>-->
+        <!--<el-button v-if="isAuth('tactics:paper:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>-->
       </el-form-item>
     </el-form>
     <el-table
@@ -35,32 +35,13 @@
         label="试卷名称">
       </el-table-column>
       <el-table-column
-        prop="collegename"
-        header-align="center"
-        align="center"
-        label="学院">
-      </el-table-column>
-      <el-table-column
-        prop="majorname"
-        header-align="center"
-        align="center"
-        label="专业名称">
-      </el-table-column>
-      <el-table-column
-        prop="coursename"
-        header-align="center"
-        align="center"
-        label="课程名称">
-      </el-table-column>
-      <el-table-column
         fixed="right"
         header-align="center"
         align="center"
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <!--<el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.tacid)">查看</el-button>-->
-          <!--<el-button type="text" size="small" @click="detailHandle(scope.row.tacid)">查看</el-button>-->
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.tacid)">查询</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.tacid)">删除</el-button>
         </template>
       </el-table-column>
@@ -76,7 +57,6 @@
     </el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
-    <!--<detail v-if="detailVisible" ref="detail" @refreshDataList="getDataList"></detail>-->
   </div>
 </template>
 
@@ -96,12 +76,10 @@
         dataListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false
-        // detailVisible: false
       }
     },
     components: {
       AddOrUpdate
-      // detail
     },
     activated () {
       this.getDataList()
@@ -115,7 +93,7 @@
           limit: this.pageSize,
           key: this.dataForm.key
         }
-        API.tactics.list(params).then(({data}) => {
+        API.paper.list(params).then(({data}) => {
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
@@ -148,11 +126,6 @@
           this.$refs.addOrUpdate.init(id)
         })
       },
-      detailHandle (id) {
-        API.tactics.info(id).then(({data}) => {
-          alert(data.list)
-        })
-      },
       // 删除
       deleteHandle (id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
@@ -163,7 +136,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          API.tactics.del(ids).then(({data}) => {
+          API.paper.del(ids).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',

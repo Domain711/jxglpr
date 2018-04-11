@@ -52,6 +52,8 @@ export default new Router({
             { path: '/n/lessonplan', component: _import('lessonplan/index'), name: 'lessonplan', desc: '教学计划管理' },
             { path: '/n/achievements', component: _import('achievements/index'), name: 'achievements', desc: '科研成果管理' },
             { path: '/n/tactics', component: _import('tactics/index'), name: 'tactics', desc: '组卷策略' },
+            { path: '/n/paper', component: _import('paper/index'), name: 'paper', desc: '试卷查询' },
+            { path: '/n/paperq', component: _import('paperq/index'), name: 'paperq', desc: '试卷库查询' },
             { path: '/n/log', component: _import('log/index'), name: 'log', desc: '系统日志' }
           ]
         }

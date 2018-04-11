@@ -20,6 +20,8 @@ import * as teachplan from './modules/teachplan'
 import * as lessonplan from './modules/lessonplan'
 import * as achievements from './modules/achievements'
 import * as tactics from './modules/tactics'
+import * as paper from './modules/paper'
+import * as paperq from './modules/paperq'
 import * as schedule from './modules/schedule'
 
 export default {
@@ -45,5 +47,7 @@ export default {
   lessonplan,        // 教学计划管理
   achievements,        // 科研成果管理
   tactics,        // 组卷策略
+  paper,        // 试卷查询
+  paperq,        // 试卷库查询
   schedule    // 定时任务
 }
